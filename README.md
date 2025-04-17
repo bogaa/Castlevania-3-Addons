@@ -7,7 +7,7 @@
 ## Patch-Summery:
   - ROM expansion along different code expansions.
   - Option Screen Patch
-  - Jumping Controll Patch (NaOH)
+  - Jumping Controll Patch ((NaOH)[https://www.romhacking.net/hacks/3596/])
   - Subweapon drop Patch (SpiderDave)
   - Level select and debuging tools
 
