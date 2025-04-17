@@ -6,12 +6,11 @@
 
 
 ### Tools
-  [screen decompress-/compress-tool](https://github.com/SpiderDave/NESCompress)
-  [asar](https://github.com/RPGHacker/asar)
-  [old sdASM](https://github.com/SpiderDave/SpiderDaveAsm)
-  [NEXXT](https://frankengraphics.itch.io/nexxt)
-  [floatIPS](https://github.com/bates64/flips)
-
-    
+  - Name Table editing [screen decompress-/compress-tool](https://github.com/SpiderDave/NESCompress)
+  - Assembler [asar](https://github.com/RPGHacker/asar) (assembler for old patches  [sdASM](https://github.com/SpiderDave/SpiderDaveAsm))
+  - Screen Editing [NEXXT](https://frankengraphics.itch.io/nexxt)
+  - IPS patch creation [floatIPS](https://github.com/bates64/flips)
+  
+   
 ### Many thanks to all shared tools and work. Tell me if I forget someone!
   
