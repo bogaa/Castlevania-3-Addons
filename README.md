@@ -4,6 +4,13 @@
   - Labels may change over time so make backups when updating. 
   - todo (write wiki pages and explain the whole thing a bit..)
 
+    Patch Overview:
+    ROM expansion along different code expansions.
+    Option Screen Patch
+    Jumping Controll Patch (NaOH)
+    Subweapon drop Patch (SpiderDave)
+    Level select and debuging tools
+
 
 ### Tools
   - Name Table editing [screen decompress-/compress-tool](https://github.com/SpiderDave/NESCompress)
