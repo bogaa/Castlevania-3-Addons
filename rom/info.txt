@@ -1,0 +1,10 @@
+1-Put the ROM mentioned below into this folder.
+2-Rename the file to Castlevania_3.nes
+3-use make.bat to patch the file. Check out main.asm for options.
+
+Database match: Castlevania III - Dracula's Curse (USA)
+Database: No-Intro: Nintendo Entertainment System (v. 20210216-231042)
+File SHA-1: F91281D5D9CC26BCF6FB4DE2F5BE086BC633D49B
+File CRC32: 7CC9C669
+ROM SHA-1: 23C4DAFCC17FA75E8D682931702277659CD59735
+ROM CRC32: ED2465BE
