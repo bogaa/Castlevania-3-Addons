@@ -2,6 +2,7 @@
 
 pushTable 
 
+
 { ; -- text symbols intro ----------------------------------------
 
 	' ' = $00
@@ -80,7 +81,7 @@ base $85C9
 	textGroupStartingIDX_stageBased_02: db $00,$06,$10,$00,$00,$00,$00,$18  
 	textGroupStartingIDX_stageBased_03: db $00,$08,$12,$00,$00,$00,$00,$1A  
 	textGroupStartingIDX_stageBased_04: db $00,$0A,$0A,$00,$00,$00,$00,$0A  
-
+assert pc() <= $85F1
 
 org $04A26
 base $8A26
@@ -92,11 +93,13 @@ base $8A26
 						dw textPointersGrant_03              ;018A2C|  06      |018A5A;
 						dw textPointersGrant_04              ;018A2E|  08      |018A62;
 						dw textPointersGrant_05              ;018A30|  0a      |018A6A;
-						dw textPointersSypha_06              ;018A32|  0c      |018A72;
+						
+            dw textPointersSypha_06              ;018A32|  0c      |018A72;
 						dw textPointersSypha_07              ;018A34|  0e      |018A7A;
 						dw textPointersSypha_08              ;018A36|  10      |018A82;
 						dw textPointersSypha_09              ;018A38|  12      |018A8A;
-						dw textPointersAlucard_0a            ;018A3A|  14      |018A92;
+						
+            dw textPointersAlucard_0a            ;018A3A|  14      |018A92;
 						dw textPointersAlucard_0b            ;018A3C|  16      |018A9A;
 						dw textPointersAlucard_0c            ;018A3E|  18      |018AA2;
 						dw textPointersAlucard_0d            ;018A40|  20      |018AAA;
@@ -138,62 +141,56 @@ base $8A26
 						dw $FFFF                             ;018A70|        |      ;
 	
 
+   if !grantDaggerSpiderSilkFreez == 1
 
-    textDataGrant_00:   
-		db "My name is Grant.",$FF
- 
-    textDataGrant_01: 
-		db "I dreamed I was",$FF 
- 
-    textDataGrant_02: 
-		db "turned into a ghost.",$FF                  
- 
-    textDataGrant_03: 
-		db "Please take me with",$FF                 
- 
-    textDataGrant_04: 
-		db "you.  My family was",$FF                
- 
-    textDataGrant_05: 
-        db "killed by Dracula.",$FF              
- 
-    textDataGrant_06: 
-        db "What will you do?",$FF               
- 
-    textDataGrant_07: 
-        db "  Take him with you?",$FF               
- 
-    textDataGrant_08: 
-        db "  Leave him behind?",$FF               
- 
-    textDataGrant_09: 
-		db "I can help you",$FF 
-
-    textDataGrant_0a: 
-		db "a lot because I",$FF   				
- 
-    textDataGrant_0b: 
-		db "am very fast.",$FF 
+    textDataGrant_00: db "When I got to this",$FF     
+    textDataGrant_01: db "Castle. A spider",$FF  
+    textDataGrant_02: db "bit me.",$FF   
+                
+    textDataGrant_03: db "Your whip had been",$FF    		              
+    textDataGrant_04:	db "a great helped for",$FF      	          
+    textDataGrant_05: db "me to prevent this.",$FF                        
     
-	textDataGrant_0c: 
-        db "Thanks for helping",$FF               
- 
-    textDataGrant_0d: 
-       	db "me.  I hope we see",$FF                
- 
-    textDataGrant_0e: 
-        db "each other again.",$FF             
- 
-    textDataGrant_0f: 
-       	db "My job is done,",$FF                 
- 
-    textDataGrant_10: 
-		db "so you should go",$FF 
-	
-    textDataGrant_011: 
-		db "with him for now.",$FF                 
-
-
+    textDataGrant_06: db "Can I come with you?",$FF                      
+    textDataGrant_07: db "  May be?",$FF                        
+    textDataGrant_08: db "  No creep allowed!",$FF                     
+    
+    textDataGrant_09: db "If we find a other",$FF 		
+    textDataGrant_0a: db "spider. Try to stick",$FF  		 				
+    textDataGrant_0b: db "your cheek out.",$FF 		   
+	  
+    textDataGrant_0c: db "This been my first",$FF                      
+    textDataGrant_0d: db "thoughts too. We",$FF        	               
+    textDataGrant_0e: db "see us again.",$FF                     
+    
+    textDataGrant_0f: db "We see each other",$FF         	              
+    textDataGrant_10: db "down town. Good",$FF 	 
+    textDataGrant_011: db "luck don't suck.",$FF   
+   else 
+    textDataGrant_00: db "My name is Grant.",$FF 
+    textDataGrant_01: db "I dreamed I was",$FF  
+    textDataGrant_02: db "turned into a ghost.",$FF    		              
+    
+    textDataGrant_03: db "Please take me with",$FF    		              
+    textDataGrant_04:	db "you.  My family was",$FF      	          
+    textDataGrant_05: db "killed by Dracula.",$FF                        
+    
+    textDataGrant_06: db "What will you do?",$FF                      
+    textDataGrant_07: db "  Take him with you?",$FF                        
+    textDataGrant_08: db "  Leave him behind?",$FF                     
+    
+    textDataGrant_09: db "I can help you",$FF 		
+    textDataGrant_0a: db "a lot because I",$FF  		 				
+    textDataGrant_0b: db "am very fast.",$FF 		   
+	  
+    textDataGrant_0c: db "Thanks for helping",$FF                      
+    textDataGrant_0d: db "me.  I hope we see",$FF        	               
+    textDataGrant_0e: db "each other again.",$FF                     
+    
+    textDataGrant_0f: db "My job is done,",$FF         	              
+    textDataGrant_10: db "so you should go",$FF 	 
+    textDataGrant_011: db "with him for now.",$FF 
+   endif   
  
  	textPointersSypha_06: 
 						dw textDataSypha_00                  ;018A72|        |018BF7;
@@ -220,44 +217,22 @@ base $8A26
 						dw $FFFF                             ;018A90|        |      ;
  
  
-    textDataSypha_00: 
-		db "Thanks for helping",$FF                
-
-    textDataSypha_01: 
-		db "me.  I'm Syfa, the",$FF               
- 
-    textDataSypha_02: 
-		db "Vampire Hunter.",$FF                
- 
-    textDataSypha_03: 
-        db "I will follow",$FF               
- 
-    textDataSypha_04: 
-		db "you if you need",$FF               
- 
-    textDataSypha_05: 
-        db "my help.",$FF               
- 
-    textDataSypha_06: 
-		db "I hope a Magic",$FF                
- 
-    textDataSypha_07: 
-        db "Spirit will give",$FF              
- 
-    textDataSypha_08: 
-        db "us the power.",$FF               
- 
-    textDataSypha_09: 
-       	db "Please be careful.",$FF                
- 
-    textDataSypha_0a: 
-		db "I hope you will be",$FF                
- 
-    textDataSypha_0b: 
-        db "victorious.",$FF               
- 
- 
- 
+    textDataSypha_00: db "Thanks for helping",$FF   	             
+    textDataSypha_01: db "me.  I'm Syfa, the",$FF   		            
+    textDataSypha_02:	db "Vampire Hunter.",$FF      
+	          
+    textDataSypha_03: db "I will follow",$FF                     
+    textDataSypha_04: db "you if you need",$FF 		               
+    textDataSypha_05: db "my help.",$FF      
+                
+    textDataSypha_06: db "I hope a Magic",$FF               
+    textDataSypha_07: db "Spirit will give",$FF                    
+    textDataSypha_08: db "us the power.",$FF  
+                     
+    textDataSypha_09: db "Please be careful.",$FF         	             
+    textDataSypha_0a: db "I hope you will be",$FF  	              
+    textDataSypha_0b: db "victorious.",$FF  
+                     
  
 	textPointersAlucard_0a: 
 						dw textDataAlucard_00                ;018A92|        |018CB4;
@@ -284,46 +259,28 @@ base $8A26
 						dw $FFFF                             ;018AB0|        |      ;	
 	
 	
-	textDataAlucard_00: 
-       	db "I'm surprised you",$FF                 
- 
-	textDataAlucard_01: 
-        db "beat me.  I've been",$FF                
- 
-	textDataAlucard_02: 
-		db "waiting for you.",$FF                   
-
-	textDataAlucard_03: 
-		db "I need you to",$FF             
-	
-	textDataAlucard_04: 
-		db "help me destroy",$FF             
-	
-	textDataAlucard_05: 
-		db "Dracula.",$FF               
-	
-	textDataAlucard_06: 
-		db "I'm glad to hear",$FF               
-	
-	textDataAlucard_07: 
-		db "that.  Let's get",$FF            
-	
-	textDataAlucard_08: 
-		db "him .  I am Alucard.",$FF 
-	
-	textDataAlucard_09: 
-		db "Well, I'll have to",$FF                          
- 
-	textDataAlucard_0a: 
-		db "find someone else.",$FF     
- 
-	textDataAlucard_0b: 
-        db "Please be careful!",$FF                  
+	textDataAlucard_00: db "I'm surprised you",$FF       	                
+	textDataAlucard_01:  db "beat me.  I've been",$FF                      
+	textDataAlucard_02: db "waiting for you.",$FF     
+		              
+	textDataAlucard_03: db "I need you to",$FF   	           	
+	textDataAlucard_04: db "help me destroy",$FF  		           
+	textDataAlucard_05: db "Dracula.",$FF    
+		           
+	textDataAlucard_06: db "I'm glad to hear",$FF  	             
+	textDataAlucard_07: db "that.  Let's get",$FF	            
+	textDataAlucard_08: 	db "him .  I am Alucard.",$FF 
+		
+	textDataAlucard_09: db "Well, I'll have to",$FF    		                      
+	textDataAlucard_0a: db "find someone else.",$FF  		   
+	textDataAlucard_0b: db "Please be careful!",$FF  
+                        
    
    
    
 assert pc() <= $8D82
 }
+
 
 { ; -- ending text -----------------------------------------------
 
@@ -570,5 +527,6 @@ base $D772
 		db $ff   
 	; free space.. this needs to be at the end of this file 
 }
+
 	
 pullTable	

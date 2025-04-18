@@ -119,7 +119,23 @@ base SRAM_Code
 					+	rts 
 ; ----------------------------------------------------	
 
-
+         speedLimit_A:
+            sta $00  
+            lda.w r_entity_Xspd,X 
+            bmi ++
+            cmp $00
+            bcc endSpeedLimiter
+          - lda $00
+            sta.w r_entity_Xspd,X   
+          endSpeedLimiter:
+            rts
+        
+        ++  lda $00
+            eor #$ff 
+            sta $00 
+            cmp.w r_entity_Xspd,X 
+            bcc endSpeedLimiter
+            jmp -
 
 ; ----------------------------------------------------	
 

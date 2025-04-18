@@ -242,9 +242,31 @@ if !grantNinjaStar == 1
 			rts 		
 endif 
  
+
+
+
+{ ; data tables
+ 
+  subweaponHeartCost:     ; 0EBAB6|        |      ;   
+        db $00      
+        db $01            ; SUBWE_AXE = $01             
+        db $01            ; SUBWE_CROSS = $02      
+        db $01            ; SUBWE_DAGGER = $03      
+        db $01            ; SUBWE_HOLYW = $04      
+        db $01            ; SUBWE_FLAME = $05      
+        db $01            ; SUBWE_FREEZ = $06      
+        db $01            ; SUBWE_ORB = $07      
+        db $01            ; SUBWE_GRANT_DAGGER = $08    
+        db $01            ; SUBWE_GRANT_AXE = $09      
+        db $00            ; SUBWE_ALUCARD = $0A    
+        db $05            ; SUBWE_CLOCK = $0B                  
+  
+}
+
  
 { ; routines..   
-			CODE_0E8001:
+			
+      CODE_0E8001:
 						LDA.B r_CogSize                      ;0E8001|A595    |000095;
 						ASL A                                ;0E8003|0A      |      ;
 						ASL A                                ;0E8004|0A      |      ;
@@ -1866,7 +1888,7 @@ endif
 	checkOutOfBoundDeath:
 						CMP.B #$E0                           ;0E8BF4|C9E0    |      ;
 						BCC CODE_0E8BFB                      ;0E8BF6|9003    |0E8BFB;
-						JMP.W setPlayerDeath                 ;0E8BF8|4CF98C  |0E8CF9;
+            JMP.W setPlayerDeath                 ;0E8BF8|4CF98C  |0E8CF9;
 	
 	
 			CODE_0E8BFB:
@@ -5211,7 +5233,7 @@ endif
 						STA.W r_entity_YPos                ;0E9F1D|8D1C04  |0E041C;
 						LDA.B #$02                           ;0E9F20|A902    |      ;
 						                               ;0E9F22|        |      ;
-						JSR.W clearAllEntitySprite              ;0E9F23|        |0FEF57;
+						JSR.W clearSpriteAndAnimGroup              ;0E9F23|        |0FEF57;
 						LDA.B #$32                           ;0E9F25|A932    |      ;
 						STA.W r_Player_StateDoubled        ;0E9F27|8D6505  |0E0565;
 						RTS                                  ;0E9F2A|60      |      ;
@@ -5928,7 +5950,7 @@ endif
 			CODE_0EA339:
 						LDA.B #$02                           ;0EA339|A902    |      ;
 						                               ;0EA33B|        |      ;
-						JSR.W clearAllEntitySprite              ;0EA33C|        |0FEF57;
+						JSR.W clearSpriteAndAnimGroup              ;0EA33C|        |0FEF57;
 						LDA.B #$32                           ;0EA33E|A932    |      ;
 						STA.W r_Player_StateDoubled        ;0EA340|8D6505  |0E0565;
 						RTS                                  ;0EA343|60      |      ;
@@ -6561,7 +6583,7 @@ endif
 						JSR.W lunchMusic                        ;0EA6BE|        |0FE25F;
 						LDA.B #$05                           ;0EA6C0|A905    |      ;
 						                               ;0EA6C2|        |      ;
-						JSR.W clearAllEntitySprite              ;0EA6C3|        |0FEF57;
+						JSR.W clearSpriteAndAnimGroup              ;0EA6C3|        |0FEF57;
 						LDA.B #$01                           ;0EA6C5|A901    |      ;
 						STA.W r_entity_AI_IDX          ;0EA6C7|8DC105  |0E05C1;
 						STA.B r_alucardBatTimer              ;0EA6CA|85AE    |0000AE;
@@ -6592,7 +6614,7 @@ endif
 			CODE_0EA6ED:
 						LDA.B #$03                           ;0EA6ED|A903    |      ;
 						db $20                               ;0EA6EF|        |      ;
-						dw clearAllEntitySprite              ;0EA6F0|        |0FEF57;
+						dw clearSpriteAndAnimGroup              ;0EA6F0|        |0FEF57;
 						JSR.W CODE_0EA70A                    ;0EA6F2|200AA7  |0EA70A;
 						LDA.B #$00                           ;0EA6F5|A900    |      ;
 						STA.W r_entity_YsubSpd             ;0EA6F7|8D3705  |0E0537;
@@ -6629,7 +6651,7 @@ endif
 	alucard_batHurt_state3c:
 						LDA.B #$06                           ;0EA726|A906    |      ; pop sprite?
 						db $20                               ;0EA728|        |      ;
-						dw clearAllEntitySprite              ;0EA729|        |0FEF57;
+						dw clearSpriteAndAnimGroup              ;0EA729|        |0FEF57;
 						LDA.B #$01                           ;0EA72B|A901    |      ;
 						STA.W r_entity_AI_IDX          ;0EA72D|8DC105  |0E05C1;
 						INC.W r_Player_StateDoubled        ;0EA730|EE6505  |0E0565;
@@ -7819,7 +7841,7 @@ endif
 						LDA.W r_entity_ID,X       ;0EAE60|BD4E05  |0E054E;
 						BNE CODE_0EAE6D                      ;0EAE63|D008    |0EAE6D;
 	
-			CODE_0EAE65:
+			startSubwe_checks:
 						DEC.B $17                            ;0EAE65|C617    |000017;
 						BEQ endLoop_AE6C                     ;0EAE67|F003    |0EAE6C;
 						INX                                  ;0EAE69|E8      |      ;
@@ -7862,41 +7884,111 @@ endif
 			
 			
 			mainSubweapon:
-						LDA.W r_Player_StateDoubled,X      ;0EAE9B|BD6505  |0E0565;
-						CMP.B #$02                           ;0EAE9E|C902    |      ;
-						BEQ CODE_0EAE65                      ;0EAEA0|F0C3    |0EAE65;
-						LDA.W r_entity_XPos,X              ;0EAEA2|BD3804  |0E0438;
-						CMP.B #$09                           ;0EAEA5|C909    |      ;
-						BCC CODE_0EAEBB                      ;0EAEA7|9012    |0EAEBB;
-						CMP.B #$F8                           ;0EAEA9|C9F8    |      ;
-						BCS CODE_0EAEBB                      ;0EAEAB|B00E    |0EAEBB;
-						LDA.W r_entity_YPos,X              ;0EAEAD|BD1C04  |0E041C;
-						CMP.B #$10                           ;0EAEB0|C910    |      ;
-						BCC CODE_0EAEBB                      ;0EAEB2|9007    |0EAEBB;
-						CMP.B #$E0                           ;0EAEB4|C9E0    |      ;
-						BCS CODE_0EAEBB                      ;0EAEB6|B003    |0EAEBB;
-						JMP.W CODE_0EAE65                    ;0EAEB8|4C65AE  |0EAE65;
+						LDA.W r_Player_StateDoubled,X         ; 0EAE9B|BD6505  |0E0565;
+						CMP.B #$02                           
+						BEQ startSubwe_checks                
+						
+            LDA.W r_entity_XPos,X         
+						CMP.B #$09                    
+						BCC subWe_borderCross         
+						CMP.B #$F8                    
+						BCS subWe_borderCross         
+						LDA.W r_entity_YPos,X         
+						CMP.B #$10                    
+						BCC subWe_borderCross         
+            CMP.B #$E0                    
+						BCS subWe_borderCross         					
+            
+            JMP.W startSubwe_checks       
 	
+			subWe_borderCross:
+            LDA.W r_entity_ID,X                    ;0EAEBB|BD4E05  |0E054E;
+						CMP.B #SUBWE_FREEZ                     ;0EAEA5|C909    |      ;          
+            BEQ hideSprite_subWe                  
+						
+            LDA.B #$00                       
+						STA.W r_entity_ID,X              
+						STA.W r_entity_spriteID,X        
+						STA.W r_entity_XPos,X            
+						STA.W r_entity_YPos,X            
 	
-			CODE_0EAEBB:
-						LDA.W r_entity_ID,X       ;0EAEBB|BD4E05  |0E054E;
-						CMP.B #$06                           ;0EAEBE|C906    |      ;
-						BEQ CODE_0EAED3                      ;0EAEC0|F011    |0EAED3;
-						LDA.B #$00                           ;0EAEC2|A900    |      ;
-						STA.W r_entity_ID,X       ;0EAEC4|9D4E05  |0E054E;
-						STA.W r_entity_spriteID,X        ;0EAEC7|9D0004  |0E0400;
-						STA.W r_entity_XPos,X              ;0EAECA|9D3804  |0E0438;
-						STA.W r_entity_YPos,X              ;0EAECD|9D1C04  |0E041C;
-						JMP.W CODE_0EAE65                    ;0EAED0|4C65AE  |0EAE65;
+            JMP.W startSubwe_checks          
 	
-	
-			CODE_0EAED3:
-						LDA.B #$00                           ;0EAED3|A900    |      ;
-						STA.W r_entity_XPos,X              ;0EAED5|9D3804  |0E0438;
-						LDA.B #$80                           ;0EAED8|A980    |      ;
-						STA.W r_entity_mask,X            ;0EAEDA|9D7004  |0E0470;
-						JMP.W CODE_0EAE65                    ;0EAEDD|4C65AE  |0EAE65;
+			hideSprite_subWe:
+						LDA.B #$00                             ;0EAED3|A900    |      ;
+						STA.W r_entity_XPos,X            
+						LDA.B #$80                       
+						STA.W r_entity_mask,X            
+						
+            JMP.W startSubwe_checks          
 
+  
+  { ;  ending place sprites?? 
+			
+      donno_01_state_00:
+					LDA.B #$0E                           ;0EB984|A90E    |      ;
+					STA.W r_entity_spriteGroup,X        ;0EB986|9D8C04  |0E048C;
+					LDA.B #$18                           ;0EB989|A918    |      ;
+					STA.W r_entity_spriteID,X           ;0EB98B|9D0004  |0E0400;
+					LDA.B #$00                           ;0EB98E|A900    |      ;
+					STA.W r_entity_mask,X                ;0EB990|9D7004  |0E0470;
+					LDA.B #$20                           ;0EB993|A920    |      ;
+					STA.W r_entity_AI_IDX,X               ;0EB995|9DC105  |0E05C1;
+					INC.W r_Player_StateDoubled,X      ;0EB998|FE6505  |0E0565;
+					INC.W r_Player_StateDoubled,X      ;0EB99B|FE6505  |0E0565;
+					RTS                                  ;0EB99E|60      |      ;
+	
+	
+        donno_00_state_00:
+						LDA.B #$0E                           ;0EB99F|A90E    |      ;
+						STA.W r_entity_spriteGroup,X        ;0EB9A1|9D8C04  |0E048C;
+						LDA.B #$1A                           ;0EB9A4|A91A    |      ;
+						STA.W r_entity_spriteID,X        ;0EB9A6|9D0004  |0E0400;
+						LDA.B #$00                           ;0EB9A9|A900    |      ;
+						STA.W r_entity_mask,X            ;0EB9AB|9D7004  |0E0470;
+						LDA.B #$20                           ;0EB9AE|A920    |      ;
+						STA.W r_entity_AI_IDX,X        ;0EB9B0|9DC105  |0E05C1;
+						INC.W r_Player_StateDoubled,X      ;0EB9B3|FE6505  |0E0565;
+						INC.W r_Player_StateDoubled,X      ;0EB9B6|FE6505  |0E0565;
+						RTS                                  ;0EB9B9|60      |      ;
+	
+	
+		donno_state_01:
+						INC.W r_Player_StateDoubled,X      ;0EB9BA|FE6505  |0E0565;
+						INC.W r_Player_StateDoubled,X      ;0EB9BD|FE6505  |0E0565;
+	
+		donno_state_03:
+						DEC.W r_entity_AI_IDX,X        ;0EB9C0|DEC105  |0E05C1;
+						BNE CODE_0EB9CE                      ;0EB9C3|D009    |0EB9CE;
+						LDA.B #$00                           ;0EB9C5|A900    |      ;
+						STA.W r_entity_spriteID,X        ;0EB9C7|9D0004  |0E0400;
+						STA.W r_entity_ID,X       ;0EB9CA|9D4E05  |0E054E;
+						RTS                                  ;0EB9CD|60      |      ;
+	
+	
+			CODE_0EB9CE:
+						LDA.W r_damagActionFlag,X       ;0EB9CE|BD1D06  |0E061D;
+						BNE CODE_0EB9ED                      ;0EB9D1|D01A    |0EB9ED;
+						LDA.W r_entity_YsubSpd,X           ;0EB9D3|BD3705  |0E0537;
+						CLC                                  ;0EB9D6|18      |      ;
+						ADC.B #$40                           ;0EB9D7|6940    |      ;
+						STA.W r_entity_YsubSpd,X           ;0EB9D9|9D3705  |0E0537;
+						LDA.W r_entity_Yspd,X              ;0EB9DC|BD2005  |0E0520;
+						ADC.B #$00                           ;0EB9DF|6900    |      ;
+						STA.W r_entity_Yspd,X              ;0EB9E1|9D2005  |0E0520;
+						JSR.W xSpd_2_Xpos                    ;0EB9E4|2016B9  |0EB916;
+						JSR.W ySpd_2_Ypos                    ;0EB9E7|202FB9  |0EB92F;
+						JMP.W adjustRoomScroll2_entity                    ;0EB9EA|4C51B9  |0EB951;
+		
+		
+			CODE_0EB9ED:
+						LDA.B #$00                           ;0EB9ED|A900    |      ;
+						STA.W r_entity_XPos,X              ;0EB9EF|9D3804  |0E0438;
+						RTS                                  ;0EB9F2|60      |      ;
+		
+						CLC                                  ;0EB9F3|18      |      ;
+						RTS                                  ;0EB9F4|60      |      ;
+  }
 	
 	
 		subWeaponRoutines:
@@ -7930,19 +8022,16 @@ endif
 						jmp zeroPosAndStates
 				
 				mainSurikan_01:
-					;	jsr mainDagger_01
-						
 						lda #$08 					; timer 
 						STA.W r_entity_extra,X						
 						jsr axeState_01	
-						jsr setMovmentSpdZero
+						jsr clearSpeed
 						ldy.w r_entity_FacingLeft
 						lda shurikanSpeed,y
 						sta r_entity_Xspd,x 						
-;						lda #$01
-;						sta.w r_entity_mask,x 	; collusion bit 
-						
-						
+						;lda #$01
+						;sta.w r_entity_mask,x 	; collusion bit 
+											
 						rts 
 				shurikanSpeed:
 						db $04,$fc
@@ -8051,29 +8140,38 @@ endif
 						dw ballState_05                      ;0EAF30|        |0EB1F6;
 						dw ballState_06                      ;0EAF32|        |0EB246;
 	
-		mainGrantDagger:
+	
 			if !grantDaggerSpiderSilkFreez == 1		
-						dw initThrowSubweapon_00             
+			mainGrantDagger:			
+            dw initThrowSubweapon_00             
 						dw grantDagger_state_01              		
 						dw mainDagger_ice
-		
-			else 	
-			;			dw initThrowSubweapon_00             
+			
+      mainGrantAxe:
+						dw initThrowSubweapon_00            
+						dw grantAxe_state_01                
+						dw newAxe           ; axeState_02   
+            dw newAxeGround_03 
+      
+      ;			dw initThrowSubweapon_00             
 			;			dw grantDagger_state_01			
 			;			dw mainDagger_ice					;!daggerHolyFreez ; a alternative subweapon 
-			;			dw holyWaterState_03				;!daggerHolyFreez ; a alternative subweapon 						
-			
-						dw initThrowSubweapon_00             ;0EAF34|        |0EB45C;
+			;			dw holyWaterState_03				;!daggerHolyFreez ; a alternative subweapon 
+      
+      else 				
+				mainGrantDagger:			
+            dw initThrowSubweapon_00             ;0EAF34|        |0EB45C;
 						dw grantDagger_state_01              ;0EAF36|        |0EB62A;						
 						dw mainDagger_02                     ;0EAF38|        |0EB6F4;
-			endif 
 			
 			mainGrantAxe:
 						dw initThrowSubweapon_00             ;0EAF3A|        |0EB45C;
 						dw grantAxe_state_01                 ;0EAF3C|        |0EB5B9;
 						dw axeState_02                       ;0EAF3E|        |0EB4D7;
-	
-		mainAlucardAttack:
+      endif
+		
+    
+    mainAlucardAttack:
 						dw initThrowSubweapon_00             ;0EAF40|        |0EB45C;
 						dw alucardAttackState_01             ;0EAF42|        |0EAF77;
 						dw alucardAttackState_02             ;0EAF44|        |0EAFEA;
@@ -8094,8 +8192,8 @@ endif
 	
 			
 			getThrowWeaponStats:
-						JSR.W throwSubweaponRelated               ;0EAF54|2055BC  |0EBC55;
-						INC.W r_Player_StateDoubled,X      ;0EAF57|FE6505  |0E0565;
+						JSR.W throwSubweaponRelated               ;0EAF54|2055BC  |0EBC55;			
+            INC.W r_Player_StateDoubled,X      ;0EAF57|FE6505  |0E0565;
 						INC.W r_Player_StateDoubled,X      ;0EAF5A|FE6505  |0E0565;
 						LDY.W r_entity_ID,X       ;0EAF5D|BC4E05  |0E054E;
 						LDA.W weaponDamage,Y              ;0EAF60|B967AF  |0EAF67;
@@ -8106,7 +8204,7 @@ endif
 	
 	
 		weaponDamage:
-						db $00		; mainAxe               
+						db $00		  ; mainAxe               
 						db $60      ; mainAxe               
 						db $60      ; mainCross             
 						db $40      ; mainDagger            
@@ -8115,12 +8213,16 @@ endif
 						db $02      ; mainFreeze            
 						db $C0      ; mainBalls             
 						db $40      ; mainGrantDagger       
-						db $60      ; mainGrantAxe          
-						db $20      ; mainAlucardAttack     
+			if !grantDaggerSpiderSilkFreez == 1			
+            db $50      ; groundShurikan
+      else     
+            db $60      ; mainGrantAxe          
+			endif 			
+            db $20      ; mainAlucardAttack     
 						db $00      ; mainClock             
 						db $00      ; mainDonno_00          
 						db $00      ; mainDonno_01          		
-						db $50		; grant shurikan 
+						db $50		  ; grant shurikan 
 	
 	
 	
@@ -8882,7 +8984,10 @@ endif
 						db $04,$03,$42,$08,$03,$44,$00,$03   ;0EB452|        |      ;
 						db $56,$FF                           ;0EB45A|        |      ;
 	
-	initThrowSubweapon_00:
+      
+      
+      
+      initThrowSubweapon_00:
 						JSR.W spawnSubweapon                 ;0EB45C|206EB4  |0EB46E;
 				zeroPosAndStates:		
 						LDA.B #$00                           ;0EB45F|A900    |      ;
@@ -8967,18 +9072,60 @@ endif
 						LDA.W r_entity_YPos                ;0EB4CE|AD1C04  |0E041C;
 						STA.W r_entity_YPos,X              ;0EB4D1|9D1C04  |0E041C;
 						JMP.W getThrowWeaponStats                    ;0EB4D4|4C54AF  |0EAF54;
-	
-	
-			axeState_02:
+		
+    if !grantDaggerSpiderSilkFreez == 1	
+      newAxe:
+ 						; lda #$02
+            ; sta.w r_entity_OamBaseOffset,x 
+            
+            LDA.B #$00  
+						LDY.B #$08                          
+						jsr getCollusionBasedOnOffset       
+						beq shurikanInAir				
+            
+            lda #$7f    ; timer till it disappears 
+						sta.w r_entity_AI_IDX,X
+            
+            lda #$26   
+            jsr lunchMusic	
+            jsr clearSpeed
+            
+            ; lda #$02    ; good example to see how badly managed this is.. or is it a bug? 
+            ; sta.w r_entity_PaletteOverride,x 
+            
+            lda #$01          
+            sta.w r_entity_Yspd,X 
+            
+            ldy #$ff    ; make surikan move in the direction you are not looking 
+            lda.w r_entity_FacingLeft
+            bne +
+            ldy #$01
+         +  tya 
+            sta.w r_entity_Xspd,x 
+             ; inc.w r_Player_StateDoubled,x 
+             ; inc.w r_Player_StateDoubled,x 
+             ; rts 
+            jmp getThrowWeaponStats
+
+   shurikanInAir: 
+            LDA.W r_entity_YsubSpd,X     
+ 						CLC                          
+ 						ADC.B #$60                   
+ 						STA.W r_entity_YsubSpd,X 
+            jmp continueAxeRoutine
+    endif 
+			
+      axeState_02:
 						LDA.W r_entity_YsubSpd,X           ;0EB4D7|BD3705  |0E0537;
 						CLC                                  ;0EB4DA|18      |      ;
 						ADC.B #$40                           ;0EB4DB|6940    |      ;
 						STA.W r_entity_YsubSpd,X           ;0EB4DD|9D3705  |0E0537;
-						LDA.W r_entity_Yspd,X              ;0EB4E0|BD2005  |0E0520;
+            
+      continueAxeRoutine:		
+            LDA.W r_entity_Yspd,X              ;0EB4E0|BD2005  |0E0520;
 						ADC.B #$00                           ;0EB4E3|6900    |      ;
 						STA.W r_entity_Yspd,X              ;0EB4E5|9D2005  |0E0520;
-						db $20                               ;0EB4E8|        |      ;
-						dw updateSpriteLoop                  ;0EB4E9|        |0FEF75;
+						jsr updateSpriteLoop               
 						JSR.W xSpd_2_Xpos                    ;0EB4EB|2016B9  |0EB916;
 						JSR.W ySpd_2_Ypos                    ;0EB4EE|202FB9  |0EB92F;
 						JMP.W adjustRoomScroll2_entity                    ;0EB4F1|4C51B9  |0EB951;
@@ -9082,14 +9229,14 @@ endif
 						RTS                                  ;0EB59A|60      |      ;
 	
 	
-			CODE_0EB59B:
+			grantStates_Axe_getY:
 						LDA.B r_index                        ;0EB59B|A510    |000010;
 						CMP.B #$01                           ;0EB59D|C901    |      ;
 						BEQ CODE_0EB5B3                      ;0EB59F|F012    |0EB5B3;
 						LDY.B #$00                           ;0EB5A1|A000    |      ;
 	
 			CODE_0EB5A3:
-						LDA.W DATA8_0EB708,Y                 ;0EB5A3|B908B7  |0EB708;
+						LDA.W grantStates_Axe,Y                 ;0EB5A3|B908B7  |0EB708;
 						CMP.B #$FF                           ;0EB5A6|C9FF    |      ;
 						BEQ CODE_0EB5B3                      ;0EB5A8|F009    |0EB5B3;
 						CMP.W r_Player_StateDoubled        ;0EB5AA|CD6505  |0E0565;
@@ -9122,19 +9269,20 @@ endif
 						STA.B r_tempCurrSection              ;0EB5C8|850D    |00000D;
 						LDA.W r_entity_FacingLeft,Y        ;0EB5CA|B9A804  |0E04A8;
 						STA.B r_tempCurrRoomIdx              ;0EB5CD|850E    |00000E;
-						LDA.B #$13                           ;0EB5CF|A913    |      ;
-						db $20                               ;0EB5D1|        |      ;
-						dw lunchMusic                        ;0EB5D2|        |0FE25F;
-						JSR.W CODE_0EB59B                    ;0EB5D4|209BB5  |0EB59B;
+						
+            LDA.B #$13                           ;0EB5CF|A913    |      ;
+						jsr lunchMusic                        ;0EB5D2|        |0FE25F;
+						
+            JSR.W grantStates_Axe_getY                    ;0EB5D4|209BB5  |0EB59B;
 						BCS CODE_0EB5E8                      ;0EB5D7|B00F    |0EB5E8;
-						LDA.W DATA8_0EB709,Y                 ;0EB5D9|B909B7  |0EB709;
+						LDA.W grantStates_AxeSpawn,Y                 ;0EB5D9|B909B7  |0EB709;
 						ASL A                                ;0EB5DC|0A      |      ;
 						STA.B $00                            ;0EB5DD|8500    |000000;
 						ASL A                                ;0EB5DF|0A      |      ;
 						ASL A                                ;0EB5E0|0A      |      ;
 						CLC                                  ;0EB5E1|18      |      ;
 						ADC.B $00                            ;0EB5E2|6500    |000000;
-						ADC.W DATA8_0EB709,Y                 ;0EB5E4|7909B7  |0EB709;
+						ADC.W grantStates_AxeSpawn,Y                 ;0EB5E4|7909B7  |0EB709;
 						TAY                                  ;0EB5E7|A8      |      ;
 	
 			CODE_0EB5E8:
@@ -9169,11 +9317,9 @@ endif
 						db $20                               ;0EB624|        |      ;
 						dw setSpriteAndAnimGroup_AY              ;0EB625|        |0FEF5C;
 						JMP.W getThrowWeaponStats                    ;0EB627|4C54AF  |0EAF54;
-	
-	
-						
-
-		if !grantDaggerSpiderSilkFreez == 1			
+					
+          
+      if !grantDaggerSpiderSilkFreez == 1			
 					grantDagger_state_01:		
 						DEC.W r_entity_AI_IDX,X        
 						BNE CODE_0EB5B8                
@@ -9186,9 +9332,9 @@ endif
 						STA.B r_tempCurrRoomIdx        
 						lda #$1E
 						jsr lunchMusic	
-						JSR.W CODE_0EB59B              
+						JSR.W grantStates_Axe_getY              
 						BCS CODE_0EB656                
-						LDA.W DATA8_0EB709,Y           
+						LDA.W grantStates_AxeSpawn,Y           
 						ASL A                          
 						ASL A                          
 						STA.B $00                      
@@ -9258,9 +9404,9 @@ endif
 						LDA.B #$14                           ;0EB640|A914    |      ;
 						db $20                               ;0EB642|        |      ;
 						dw lunchMusic                        ;0EB643|        |0FE25F;
-						JSR.W CODE_0EB59B                    ;0EB645|209BB5  |0EB59B;
+						JSR.W grantStates_Axe_getY                    ;0EB645|209BB5  |0EB59B;
 						BCS CODE_0EB656                      ;0EB648|B00C    |0EB656;
-						LDA.W DATA8_0EB709,Y                 ;0EB64A|B909B7  |0EB709;
+						LDA.W grantStates_AxeSpawn,Y                 ;0EB64A|B909B7  |0EB709;
 						ASL A                                ;0EB64D|0A      |      ;
 						ASL A                                ;0EB64E|0A      |      ;
 						STA.B $00                            ;0EB64F|8500    |000000;
@@ -9421,11 +9567,11 @@ endif
 						RTS                                  ;0EB707|60      |      ;
 	
 	
-			DATA8_0EB708:
+			grantStates_Axe:
 						db $46                               ;0EB708|        |      ;
 	
-			DATA8_0EB709:
-						db $01,$48,$02,$FF                   ;0EB709|        |      ;
+			grantStates_AxeSpawn:
+            db $01,$48,$02,$FF                   ;0EB709|        |      ;
 	
 			DATA8_0EB70D:
 						db $00                               ;0EB70D|        |      ;
@@ -9476,12 +9622,12 @@ endif
 						db $00,$00,$04,$00              
 	
 		holyWaterState_01:
-						DEC.W r_entity_AI_IDX,X        ;0EB752|DEC105  |0E05C1;
+						DEC.W r_entity_AI_IDX,X             ;0EB752|DEC105  |0E05C1;
 						BNE CODE_0EB791                      ;0EB755|D03A    |0EB791;
 						LDA.B #$00                           ;0EB757|A900    |      ;
-						STA.W r_entity_spriteGroup,X;0EB759|9D8C04  |0E048C;
+						STA.W r_entity_spriteGroup,X        ;0EB759|9D8C04  |0E048C;
 						LDA.B #$52                           ;0EB75C|A952    |      ;
-						STA.W r_entity_spriteID,X        ;0EB75E|9D0004  |0E0400;
+						STA.W r_entity_spriteID,X           ;0EB75E|9D0004  |0E0400;
 						LDA.W r_entity_FacingLeft          ;0EB761|ADA804  |0E04A8;
 						ASL A                                ;0EB764|0A      |      ;
 						TAY                                  ;0EB765|A8      |      ;
@@ -9530,7 +9676,7 @@ endif
 						dw lunchMusic                        ;0EB7B8|        |0FE25F;
 						JSR.W throwSubweaponRelated               ;0EB7BA|2055BC  |0EBC55;
 						LDA.B #$4C                           ;0EB7BD|A94C    |      ;
-						STA.W r_entity_AI_IDX,X        ;0EB7BF|9DC105  |0E05C1;
+						STA.W r_entity_AI_IDX,X             ;0EB7BF|9DC105  |0E05C1;
 						LDA.B #$00                           ;0EB7C2|A900    |      ;
 						LDY.B #$0C                           ;0EB7C4|A00C    |      ;
 						db $20                               ;0EB7C6|        |      ;
@@ -9539,11 +9685,70 @@ endif
 						INC.W r_Player_StateDoubled,X      ;0EB7CC|FE6505  |0E0565;
 						RTS                                  ;0EB7CF|60      |      ;
 	
-	
-		holyWaterState_03:
+    if !grantDaggerSpiderSilkFreez == 1	
+   
+        newAxeGround_03:
+            LDA.B r_index                ; !!FIXME there is a spawning bug.. not sure if IDX overflow.. but this index ended up with wired values
+            pha 
+            jsr groundShurikanRoutine
+            pla 
+            STA.B r_index  
+            rts 
+            
+         groundShurikanRoutine:   
+            DEC.W r_entity_AI_IDX,X
+            bpl +
+            LDA.B #$00                ; desspawn with out of bounce         
+						STA.W r_entity_XPos,X  
+          +        
+            lda #$10
+            sta $00
+            jsr acelarate_xSpeed
+              
+            lda #$02  
+            jsr speedLimit_A                      
+            jsr updateSpriteLoop           
+               
+            LDA.B #$00               
+						LDY.B #$00                          
+						jsr getCollusionBasedOnOffset       
+						beq surikanWallHit
+            
+            lda.w r_entity_AI_IDX,X   ; will make it disappear quicker when stuck 
+            sbc #$0F 
+            sta.w r_entity_AI_IDX,X
+
+            inc.w r_entity_YPos,X      ; help it drop out of celling 
+            inc.w r_entity_YPos,X      ; help it drop out of celling 
+            
+            lda #$28
+            jsr lunchMusic	
+            lda.w r_entity_Xspd,X 
+            eor #$FF 
+            sta.w r_entity_Xspd,X 
+            
+        surikanWallHit:	
+            JSR.W xSpd_2_Xpos                    
+            
+            LDA.B #$00  
+						LDY.B #$08                          
+						jsr getCollusionBasedOnOffset       
+						bne +	
+            lda #$20
+            sta $00
+            jsr acelarate_ySpeed
+            JSR.W ySpd_2_Ypos                    
+        +
+            jmp adjustRoomScroll2_entity
+        
+       
+    endif 
+    
+    
+    holyWaterState_03:
 						DEC.W r_entity_AI_IDX,X        ;0EB7D0|DEC105  |0E05C1;
 						BNE CODE_0EB7DB                      ;0EB7D3|D006    |0EB7DB;
-						LDA.B #$00                           ;0EB7D5|A900    |      ;
+            LDA.B #$00                           ;0EB7D5|A900    |      ;
 						STA.W r_entity_XPos,X              ;0EB7D7|9D3804  |0E0438;
 						RTS                                  ;0EB7DA|60      |      ;
 	
@@ -9560,7 +9765,7 @@ endif
 						JMP.W adjustRoomScroll2_entity                    ;0EB7E7|4C51B9  |0EB951;
 	
 	
-	freezSpellState_00:
+    freezSpellState_00:
 						LDA.W r_entity_ID,X       ;0EB7EA|BD4E05  |0E054E;
 						STA.W $054F,X                        ;0EB7ED|9D4F05  |0E054F;
 						STA.W $0550,X                        ;0EB7F0|9D5005  |0E0550;
@@ -9795,124 +10000,71 @@ endif
 			CODE_0EB982:
 						SEC                                  ;0EB982|38      |      ;
 						RTS                                  ;0EB983|60      |      ;
+
 	
-{;  probably unused 	
-			donno_01_state_00:
- 
-					LDA.B #$0E                           ;0EB984|A90E    |      ;
-					STA.W r_entity_spriteGroup,X;0EB986|9D8C04  |0E048C;
-					LDA.B #$18                           ;0EB989|A918    |      ;
-					STA.W r_entity_spriteID,X        ;0EB98B|9D0004  |0E0400;
-					LDA.B #$00                           ;0EB98E|A900    |      ;
-					STA.W r_entity_mask,X            ;0EB990|9D7004  |0E0470;
-					LDA.B #$20                           ;0EB993|A920    |      ;
-					STA.W r_entity_AI_IDX,X        ;0EB995|9DC105  |0E05C1;
-					INC.W r_Player_StateDoubled,X      ;0EB998|FE6505  |0E0565;
-					INC.W r_Player_StateDoubled,X      ;0EB99B|FE6505  |0E0565;
-					RTS                                  ;0EB99E|60      |      ;
-	
-	
-		donno_00_state_00:
-						LDA.B #$0E                           ;0EB99F|A90E    |      ;
-						STA.W r_entity_spriteGroup,X;0EB9A1|9D8C04  |0E048C;
-						LDA.B #$1A                           ;0EB9A4|A91A    |      ;
-						STA.W r_entity_spriteID,X        ;0EB9A6|9D0004  |0E0400;
-						LDA.B #$00                           ;0EB9A9|A900    |      ;
-						STA.W r_entity_mask,X            ;0EB9AB|9D7004  |0E0470;
-						LDA.B #$20                           ;0EB9AE|A920    |      ;
-						STA.W r_entity_AI_IDX,X        ;0EB9B0|9DC105  |0E05C1;
-						INC.W r_Player_StateDoubled,X      ;0EB9B3|FE6505  |0E0565;
-						INC.W r_Player_StateDoubled,X      ;0EB9B6|FE6505  |0E0565;
-						RTS                                  ;0EB9B9|60      |      ;
-	
-	
-		donno_state_01:
-						INC.W r_Player_StateDoubled,X      ;0EB9BA|FE6505  |0E0565;
-						INC.W r_Player_StateDoubled,X      ;0EB9BD|FE6505  |0E0565;
-	
-		donno_state_03:
-						DEC.W r_entity_AI_IDX,X        ;0EB9C0|DEC105  |0E05C1;
-						BNE CODE_0EB9CE                      ;0EB9C3|D009    |0EB9CE;
-						LDA.B #$00                           ;0EB9C5|A900    |      ;
-						STA.W r_entity_spriteID,X        ;0EB9C7|9D0004  |0E0400;
-						STA.W r_entity_ID,X       ;0EB9CA|9D4E05  |0E054E;
-						RTS                                  ;0EB9CD|60      |      ;
-	
-	
-			CODE_0EB9CE:
-						LDA.W r_damagActionFlag,X       ;0EB9CE|BD1D06  |0E061D;
-						BNE CODE_0EB9ED                      ;0EB9D1|D01A    |0EB9ED;
-						LDA.W r_entity_YsubSpd,X           ;0EB9D3|BD3705  |0E0537;
-						CLC                                  ;0EB9D6|18      |      ;
-						ADC.B #$40                           ;0EB9D7|6940    |      ;
-						STA.W r_entity_YsubSpd,X           ;0EB9D9|9D3705  |0E0537;
-						LDA.W r_entity_Yspd,X              ;0EB9DC|BD2005  |0E0520;
-						ADC.B #$00                           ;0EB9DF|6900    |      ;
-						STA.W r_entity_Yspd,X              ;0EB9E1|9D2005  |0E0520;
-						JSR.W xSpd_2_Xpos                    ;0EB9E4|2016B9  |0EB916;
-						JSR.W ySpd_2_Ypos                    ;0EB9E7|202FB9  |0EB92F;
-						JMP.W adjustRoomScroll2_entity                    ;0EB9EA|4C51B9  |0EB951;
-		
-		
-			CODE_0EB9ED:
-						LDA.B #$00                           ;0EB9ED|A900    |      ;
-						STA.W r_entity_XPos,X              ;0EB9EF|9D3804  |0E0438;
-						RTS                                  ;0EB9F2|60      |      ;
-		
-						CLC                                  ;0EB9F3|18      |      ;
-						RTS                                  ;0EB9F4|60      |      ;
-}	
+  { ; init weapon and animation handler  	
 	
 		initSubwAttack_CC:
 						LDX.B #$14                           ;0EB9F5|A214    |      ;
-						LDY.B r_partnerIdx                   ;0EB9F7|A43B    |00003B;
-						LDA.W r_subweap,Y                  ;0EB9F9|B98500  |0E0085;
-						BEQ CODE_0EBA2C                      ;0EB9FC|F02E    |0EBA2C;
-						STA.B r_pointerQueue                 ;0EB9FE|8508    |000008;
-						JSR.W subWe_initCheckHeart           ;0EBA00|20A2BA  |0EBAA2;
-						BCC CODE_0EBA2C                      ;0EBA03|9027    |0EBA2C;
-						LDY.B r_partnerIdx                   ;0EBA05|A43B    |00003B;
-						LDA.B r_pointerQueue                 ;0EBA07|A508    |000008;
-						CMP.B #$06                           ;0EBA09|C906    |      ;
-						BEQ CODE_0EBA5C                      ;0EBA0B|F04F    |0EBA5C;
-						CMP.B #$07                           ;0EBA0D|C907    |      ;
-						BEQ CODE_0EBA5C                      ;0EBA0F|F04B    |0EBA5C;
-						CMP.B #$0B                           ;0EBA11|C90B    |      ;
-						BEQ CODE_0EBA43                      ;0EBA13|F02E    |0EBA43;
+						LDY.B r_partnerIdx               
+						LDA.W r_subweap,Y                
+						BEQ noSubwe                  
 						
-					bossDoupleGanger_attack_03:	
-						LDA.W r_subweapMultiplier,Y        ;0EBA15|B98700  |0E0087;
-						STA.B $09                            ;0EBA18|8509    |000009;
-						LDA.B #$03                           ;0EBA1A|A903    |      ;
-						STA.B r_temp_Xpos                    ;0EBA1C|850A    |00000A;
+            STA.B r_pointerQueue                  ; !!backup? Does it translate ID?       
+						JSR.W subWe_initCheckHeart       
+						BCC noSubwe                  
+						LDY.B r_partnerIdx               						
+            LDA.B r_pointerQueue             
+						
+            CMP.B #SUBWE_FREEZ                     
+						BEQ see4_freeSlot2spawn                
+						
+            CMP.B #SUBWE_ORB                      
+						BEQ see4_freeSlot2spawn               
+						
+            CMP.B #SUBWE_CLOCK                     
+						BEQ clockInitCheck                  
+						
+			bossDoupleGanger_attack_03:	
+						LDA.W r_subweapMultiplier,Y      
+						STA.B $09                        
+						LDA.B #$03                       
+						STA.B r_temp_Xpos                
 	
-			CODE_0EBA1E:
-						LDA.W r_entity_ID,X       ;0EBA1E|BD4E05  |0E054E;
-						BEQ initSubweaponShot                ;0EBA21|F00B    |0EBA2E;
-						DEC.B $09                            ;0EBA23|C609    |000009;
-						BMI CODE_0EBA2C                      ;0EBA25|3005    |0EBA2C;
-						INX                                  ;0EBA27|E8      |      ;
-						DEC.B r_temp_Xpos                    ;0EBA28|C60A    |00000A;
-						BNE CODE_0EBA1E                      ;0EBA2A|D0F2    |0EBA1E;
+			findSubwSlot_Loop:
+						LDA.W r_entity_ID,X              
+						BEQ initSubweaponShot            
+						DEC.B $09                        
+						BMI noSubwe                  
+						INX                              
+						DEC.B r_temp_Xpos                
+						BNE findSubwSlot_Loop                  
 	
-			CODE_0EBA2C:
-						CLC                                  ;0EBA2C|18      |      ;
-						RTS                                  ;0EBA2D|60      |      ;
-	
+			noSubwe:
+						CLC                              
+						RTS                              
+			
+      
+			see4_freeSlot2spawn:			
+            LDA.W r_player_subWeID_01                           ;0EBA5C|AD6205  |0E0562;
+						ORA.W r_player_subWeID_02                           ;0EBA5F|0D6305  |0E0563;
+						ORA.W r_player_subWeID_03                           ;0EBA62|0D6405  |0E0564;
+						BEQ initSubweaponShot                             ;0EBA65|F0C7    |0EBA2E;
+						BNE noSubwe                                   ;0EBA67|D0C3    |0EBA2C;
 	
 		initSubweaponShot:
 						JSR.W checkSlot_heart4subWe          ;0EBA2E|20AABA  |0EBAAA;
 						LDA.B r_pointerQueue                 ;0EBA31|A508    |000008;
-						STA.W r_entity_ID,X       ;0EBA33|9D4E05  |0E054E;
-						LDA.B #$00                           ;0EBA36|A900    |      ;
-						STA.W r_Player_StateDoubled,X      ;0EBA38|9D6505  |0E0565;
-						STA.W r_damagActionFlag,X       ;0EBA3B|9D1D06  |0E061D;
-						STA.W r_entity_mask,X            ;0EBA3E|9D7004  |0E0470;
+						STA.W r_entity_ID,X                 ;0EBA33|9D4E05  |0E054E;
+            LDA.B #$00                           ;0EBA36|A900    |      ;
+						STA.W r_Player_StateDoubled,X       ;0EBA38|9D6505  |0E0565;
+						STA.W r_damagActionFlag,X             ;0EBA3B|9D1D06  |0E061D;
+						STA.W r_entity_mask,X                  ;0EBA3E|9D7004  |0E0470;
 						SEC                                  ;0EBA41|38      |      ;
 						RTS                                  ;0EBA42|60      |      ;
 	
 	
-			CODE_0EBA43:
+			clockInitCheck:
 						LDA.B r_stopWatchActive              ;0EBA43|A5AB    |0000AB;
 						BNE CODE_0EBA5A                      ;0EBA45|D013    |0EBA5A;
 						JSR.W checkSlot_heart4subWe          ;0EBA47|20AABA  |0EBAAA;
@@ -9932,12 +10084,7 @@ endif
 						RTS                                  ;0EBA5B|60      |      ;
 	
 	
-			CODE_0EBA5C:
-						LDA.W $0562                          ;0EBA5C|AD6205  |0E0562;
-						ORA.W $0563                          ;0EBA5F|0D6305  |0E0563;
-						ORA.W $0564                          ;0EBA62|0D6405  |0E0564;
-						BEQ initSubweaponShot                ;0EBA65|F0C7    |0EBA2E;
-						BNE CODE_0EBA2C                      ;0EBA67|D0C3    |0EBA2C;
+
 	
 		alucardBaseAttack:
 						LDX.B #$14                           ;0EBA69|A214    |      ;
@@ -9987,7 +10134,7 @@ endif
 						LDY.B r_pointerQueue                 ;0EBAA2|A408    |000008;
 						LDA.B r_hearts                       ;0EBAA4|A584    |000084;
 						CMP.W subweaponHeartCost,Y           ;0EBAA6|D9B6BA  |0EBAB6;
-	
+
 			CODE_0EBAA9:
 						RTS                                  ;0EBAA9|60      |      ;
 	
@@ -9997,13 +10144,9 @@ endif
 						BCC CODE_0EBAA9                      ;0EBAAC|90FB    |0EBAA9;
 						LDY.B r_pointerQueue                 ;0EBAAE|A408    |000008;
 						LDA.W subweaponHeartCost,Y           ;0EBAB0|B9B6BA  |0EBAB6;
-						db $4C                               ;0EBAB3|        |      ;
+						jmp addHeart_A                        ;0EBAB4|        |0FE753;
 	
-						dw addHeart_A                        ;0EBAB4|        |0FE753;
-	
-	subweaponHeartCost:
-						db $00,$01,$01,$01,$01,$01,$01,$01   ;0EBAB6|        |      ;
-						db $01,$01,$00,$05                   ;0EBABE|        |      ;
+
 	
 		group2Stuff_dono:
 						LDA.W PTR16_0EBB7A                   ;0EBAC2|AD7ABB  |0EBB7A;
@@ -10269,8 +10412,10 @@ endif
 	
 			DATA8_0EBC7D:
 						db $FE,$FD,$FB,$F7                   ;0EBC7D|        |      ;
+			
 				
-				bossDoupleGanger_weaponAnim_07:		
+        
+  bossDoupleGanger_weaponAnim_07:		
 						LDA.B #$01                           ;0EBC81|A901    |      ;
 						STA.B r_index                        ;0EBC83|8510    |000010;
 						LDX.B #$05                           ;0EBC85|A205    |      ;
@@ -10672,6 +10817,9 @@ endif
 						RTS                                  ;0EBEFC|60      |      ;
 
 				endif 
+
+  }
+
 
 assert pc() <= $BFFF
 pad $3C000
