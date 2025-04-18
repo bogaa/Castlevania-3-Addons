@@ -4,12 +4,15 @@
   - Labels may change over time so make backups when updating. 
   - todo (write wiki pages and explain the whole thing a bit..)
 
+
 ## Patch-Summery:
   - ROM expansion along different code expansions.
-  - Option Screen Patch
-  - Jumping Controll Patch ([NaOH](https://www.romhacking.net/hacks/3596/) )
-  - Subweapon drop Patch (SpiderDave)
+  - option Screen Patch
+  - jumping Control Patch ([NaOH/nstbayless](https://www.romhacking.net/hacks/3596/) )
+  - sub-weapon drop Patch (SpiderDave)
   - Level select and debuging tools
+  - hacks-roms (graphic spiderman)
+  - vinheim3 (disASM)
 
 
 ## Tools

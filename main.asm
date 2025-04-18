@@ -43,7 +43,7 @@ org ROM_CHRstart+ROM_CHRsize
     
     !fast_options = 1               ; -- general --------------------
     !removeTimer = 1
-    !deathCouter = 0
+    !deathCouter = 1
     !subweaponDrop = 1
     !expandCHRanim = 1
     !optionScreen = 1
@@ -62,7 +62,7 @@ org ROM_CHRstart+ROM_CHRsize
 
 
     !debuggMenu = 0                 ; -- debug ---------------------
-    !levelSelect = 0    
+    !levelSelect = 1    
     !sprite_viewer = 0              
     
     
