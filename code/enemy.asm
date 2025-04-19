@@ -1646,7 +1646,7 @@ base $8000
   
       CODE_0B8876:
             LDX.B r_entityID_processed           ;0B8876|A66C    |00006C;
-            JSR.W CODE_0BB584                    ;0B8878|2084B5  |0BB584;
+            JSR.W clearEntity_spriteAI_IDX                    ;0B8878|2084B5  |0BB584;
             STA.W r_entity_ID,X                  ;0B887B|9D4E05  |0B054E;
             RTS                                  ;0B887E|60      |      ;
   
@@ -2018,10 +2018,15 @@ base $8000
   
       xPosData_aim:
             db $F8,$08,$F8,$08                   ;0B8AC7|        |      ;
-  
+    
+    if !duckableProjectiles == 1
+      yPosData_aim:
+            db $09,$F9,$F9,$09                   ;0B8ACB|        |      ;     
+    else   
       yPosData_aim:
             db $09,$FA,$FA,$09                   ;0B8ACB|        |      ;
-  
+    endif 
+      
       tempDataA:
             db $00,$01,$00,$01                   ;0B8ACF|        |      ;
   
@@ -2645,13 +2650,19 @@ base $8000
             db $00,$01,$00,$00                   ;0B8EC0|        |      ;
   
         temp00_ID:
-            db $40,$41,$42,$40                   ;0B8EC4|        |      ;
-  
+            db $40,$41,$42,$40                   ;0B8EC4|        |      ;  
             db $43,$44,$45,$41                   ;0B8EC8|        |      ;
-  
+    
+    if !duckableProjectiles == 1
+      temp02_Ypos_offset:                       ; Axe Armore projectile spawn pos 
+            db $FE,$F5,$04,$F7                   ;0B8ECC|        |      ;
+            db $F4,$FB,$00,$09                   ;0B8ED0|        |      ;      
+    else   
       temp02_Ypos_offset:
             db $FE,$F6,$04,$F7                   ;0B8ECC|        |      ;
             db $F4,$FB,$00,$09                   ;0B8ED0|        |      ;
+    endif 
+  
   
       temp07_AI_IDX:
             db $58,$59,$5A,$58                   ;0B8ED4|        |      ;
@@ -5704,36 +5715,39 @@ base $8000
             LDY.B $D7                            ;0BA2D8|A4D7    |0000D7;
             BEQ CODE_0BA2FC                      ;0BA2DA|F020    |0BA2FC;
   
-      doCandleDrop:
+      smallHeartDropJob:
             JSR.W candleDrop                    ;0BA2DC|2078A2  |0BA278;
-            JMP.W CODE_0BA2F9                    ;0BA2DF|4CF9A2  |0BA2F9;
+            JMP.W itemHandler                    ;0BA2DF|4CF9A2  |0BA2F9;
   
   
-      entityIDX_over68_do:
+      entityIDX_candleGotPoped_68:
             LDA.B #$33                           ;0BA2E2|A933    |      ;
-            db $20                               ;0BA2E4|        |      ;
-            dw lunchMusic                        ;0BA2E5|        |0FE25F;
+            jsr lunchMusic                        ;0BA2E5|        |0FE25F;
             LDA.W r_entity_extra,X               ;0BA2E7|BDD805  |0B05D8;
+      
+      anyRandomDropHandler:      
             CMP.B #$AC                           ;0BA2EA|C9AC    |      ;
             BEQ CODE_0BA2D8                      ;0BA2EC|F0EA    |0BA2D8;
             CMP.B #$AE                           ;0BA2EE|C9AE    |      ;
-            BEQ doCandleDrop                      ;0BA2F0|F0EA    |0BA2DC;
+            BEQ smallHeartDropJob                      ;0BA2F0|F0EA    |0BA2DC;
             CMP.B #$98                           ;0BA2F2|C998    |      ;
             BCS CODE_0BA2FC                      ;0BA2F4|B006    |0BA2FC;
-            JSR.W CODE_0BA30B                    ;0BA2F6|200BA3  |0BA30B;
+            JSR.W changeCandle2Drop                    ;0BA2F6|200BA3  |0BA30B;
   
-      CODE_0BA2F9:
-            LDA.W r_entity_ID,X                  ;0BA2F9|BD4E05  |0B054E;
   
+  
+  
+      itemHandler:
+            LDA.W r_entity_ID,X                  ;0BA2F9|BD4E05  |0B054E; 
       CODE_0BA2FC:
             STA.W r_entity_ID,X                  ;0BA2FC|9D4E05  |0B054E;
             SEC                                  ;0BA2FF|38      |      ;
             SBC.B #$60                           ;0BA300|E960    |      ;
             STA.W r_entity_AI,X                  ;0BA302|9DEF05  |0B05EF;
-            JSR.W CODE_0BB584                    ;0BA305|2084B5  |0BB584; 
+            JSR.W clearEntity_spriteAI_IDX                    ;0BA305|2084B5  |0BB584; 
             jmp getCollectableData                       ;0BA309|        |0FFFAA;
   
-      CODE_0BA30B:
+      changeCandle2Drop:
             SEC                                  ;0BA30B|38      |      ;
             SBC.B #$93                           ;0BA30C|E993    |      ;
             db $20                               ;0BA30E|        |      ;
@@ -5794,7 +5808,7 @@ base $8000
             BNE CODE_0BA366                      ;0BA361|D003    |0BA366;
   
       CODE_0BA363:
-            JMP.W CODE_0BB5CE                    ;0BA363|4CCEB5  |0BB5CE;
+            JMP.W doCandleDrop                    ;0BA363|4CCEB5  |0BB5CE;
   
   
       CODE_0BA366:
@@ -6702,12 +6716,12 @@ base $8000
             JMP.W CODE_0BB497                    ;0BB4B6|4C97B4  |0BB497;
   
   
-    entityIDX_over68:
+    entityIDX_CandleAndItemHandler_68:
             CMP.B #$90                           ;0BB4B9|C990    |      ;
             BCC entityIDX_RTS                    ;0BB4BB|9060    |0BB51D;
             CMP.B #$93                           ;0BB4BD|C993    |      ;
             BCS entityIDX_RTS                    ;0BB4BF|B05C    |0BB51D;
-            JMP.W entityIDX_over68_do            ;0BB4C1|4CE2A2  |0BA2E2;
+            JMP.W entityIDX_candleGotPoped_68            ;0BB4C1|4CE2A2  |0BA2E2;
   
   
   damage_calculation:
@@ -6715,7 +6729,7 @@ base $8000
             CMP.B #$40                           ;0BB4C7|C940    |      ;
             BCC entityIDX_RTS                    ;0BB4C9|9052    |0BB51D;
             CMP.B #$68                           ;0BB4CB|C968    |      ;
-            BCS entityIDX_over68                 ;0BB4CD|B0EA    |0BB4B9;
+            BCS entityIDX_CandleAndItemHandler_68                 ;0BB4CD|B0EA    |0BB4B9;
             LDA.W r_entity_mask,X                ;0BB4CF|BD7004  |0B0470;
             AND.B #$02                           ;0BB4D2|2902    |      ;
             BNE entity_effectBit2                ;0BB4D4|D053    |0BB529;
@@ -6828,13 +6842,13 @@ base $8000
       CODE_0BB57B:
             LDA.B r_frameCount                   ;0BB57B|A51A    |00001A;
             AND.B #$07                           ;0BB57D|2907    |      ;
-            BEQ CODE_0BB59C                      ;0BB57F|F01B    |0BB59C;
+            BEQ randomDropFromKill                      ;0BB57F|F01B    |0BB59C;
   
       DATA8_0BB581:
             db $20                               ;0BB581|        |      ;
             dw CODE_0FE7C1                       ;0BB582|        |0FE7C1;
   
-      CODE_0BB584:
+      clearEntity_spriteAI_IDX:
             LDA.B #$00                           ;0BB584|A900    |      ;
             STA.W r_entity_damage,X              ;0BB586|9D5706  |0B0657;
             STA.W r_entity_mask,X                ;0BB589|9D7004  |0B0470;
@@ -6855,23 +6869,27 @@ base $8000
             RTS                                  ;0BB59B|60      |      ;
   
   
-      CODE_0BB59C:
+      randomDropFromKill:
+         if !noRandomDrop == 1   
+            JMP.W doCandleDrop
+         else    
+            
             INC.B r_subweaponKillCount           ;0BB59C|E6CE    |0000CE;
             LDA.B r_subweaponKillCount           ;0BB59E|A5CE    |0000CE;
             CMP.B #$05                           ;0BB5A0|C905    |      ;
-            BCS CODE_0BB5A7                      ;0BB5A2|B003    |0BB5A7;
-            JMP.W CODE_0BB5CE                    ;0BB5A4|4CCEB5  |0BB5CE;
+            BCS getRandomSubWeapon                      ;0BB5A2|B003    |0BB5A7;
+            JMP.W doCandleDrop                    ;0BB5A4|4CCEB5  |0BB5CE;
   
-  
-      CODE_0BB5A7:
+      getRandomSubWeapon:
             LDA.B #$00                           ;0BB5A7|A900    |      ;
             STA.B r_subweaponKillCount           ;0BB5A9|85CE    |0000CE;
-            db $20                               ;0BB5AB|        |      ;
-            dw CODE_0FE7AB                       ;0BB5AC|        |0FE7AB;
+            jsr mainRandomDrop                       ;0BB5AC|        |0FE7AB;
             LDA.W r_entity_ID,X                  ;0BB5AE|BD4E05  |0B054E;
-            JSR.W CODE_0BA30B                    ;0BB5B1|200BA3  |0BA30B;
-            JMP.W CODE_0BB5D1                    ;0BB5B4|4CD1B5  |0BB5D1;
-  
+           
+            JSR.W changeCandle2Drop             ; jsr.w anyRandomDropHandler
+            JMP.W candleSpawnID_2_AI_IDX                    ;0BB5B4|4CD1B5  |0BB5D1;
+        
+        endif 
   
       CODE_0BB5B7:
             LDA.B #$0F                           ;0BB5B7|A90F    |      ;
@@ -6881,22 +6899,22 @@ base $8000
       CODE_0BB5BC:
             LDA.W r_damagActionFlag,X            ;0BB5BC|BD1D06  |0B061D;
             TAX                                  ;0BB5BF|AA      |      ;
-            JSR.W CODE_0BB584                    ;0BB5C0|2084B5  |0BB584;
+            JSR.W clearEntity_spriteAI_IDX                    ;0BB5C0|2084B5  |0BB584;
             STA.W r_entity_ID,X                  ;0BB5C3|9D4E05  |0B054E;
             STA.W r_entity_AI,X                  ;0BB5C6|9DEF05  |0B05EF;
             LDX.B r_entityID_processed           ;0BB5C9|A66C    |00006C;
             JMP.W DATA8_0BB56F                   ;0BB5CB|4C6FB5  |0BB56F;
   
   
-      CODE_0BB5CE:
+      doCandleDrop:
             JSR.W candleDrop                    ;0BB5CE|2078A2  |0BA278;
   
-      CODE_0BB5D1:
+      candleSpawnID_2_AI_IDX:
             LDA.W r_entity_ID,X                  ;0BB5D1|BD4E05  |0B054E;
             SEC                                  ;0BB5D4|38      |      ;
             SBC.B #$60                           ;0BB5D5|E960    |      ;
             STA.W r_entity_AI,X                  ;0BB5D7|9DEF05  |0B05EF;
-            JMP.W CODE_0BB584                    ;0BB5DA|4C84B5  |0BB584;
+            JMP.W clearEntity_spriteAI_IDX                    ;0BB5DA|4C84B5  |0BB584;
   
   
       weapFreezRoutine:

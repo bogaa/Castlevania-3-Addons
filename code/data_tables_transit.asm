@@ -394,7 +394,7 @@ base $E475
   endif 
 
 
-;org $133AD         ; the time can be edited in revamp
+;org $133AD                  ; the time can be edited in revamp
 ;base $B3AD
 ; stageTimerCheckpoint:                   
 ;     dw timerCheckpointStage_00                ;04B3AD|        |04B3CB;
@@ -550,193 +550,26 @@ base $814C
 }
 
 
-{ ; enemySpawnerIDs
+{ ; random drop table 
 
-org $29282        ; bank_0a 
-base $9282
-
-                        ; r_spawnerXCoord -> $00
-                        ; r_spawnerYCoord -> $01
-  spawner_entity_AI_02:             ;           -> $02 -> r_entity_AI
-    db $00        ;0A9282|        |       ; changes the AI the spaned enemy uses  
-        db $01        ;0A9283|        |       ; Skull Knight                      
-        db $02        ;0A9284|        |       ; Cyclops
-        db $07        ;0A9285|        |       ; The Monster
-        db $0D        ;0A9286|        |       ; Death
-        db $00        ;0A9287|        |       ;
-        db $00        ;0A9288|        |       ;
-        db $00        ;0A9289|        |       ;
-        db $00        ;0A928A|        |       ;
-        db $00        ;0A928B|        |       ;
-        db $00        ;0A928C|        |       ;
-        db $0E        ;0A928D|        |       ; Mummy Boss
-        db $05        ;0A928E|        |       ; Alucard
-        db $06        ;0A928F|        |       ; Bone Dragon King
-        db $12        ;0A9290|        |       ; Storm Clouds
-        db $11        ;0A9291|        |       ; Grant
-        db $03        ;0A9292|        |       ;
-        db $10        ;0A9293|        |       ;
-        db $14        ;0A9294|        |       ; Grant's Knife
-        db $21        ;0A9295|        |       ;
-        db $0B        ;0A9296|        |       ; Doppelganger
-        db $0F        ;0A9297|        |       ; Doppelganger Weapon
-        db $09        ;0A9298|        |       ; Triad Wisp
-        db $0A        ;0A9299|        |       ; Medusa
-        db $08        ;0A929A|        |       ;
-        db $17        ;0A929B|        |       ; Alucard Fireball
-        db $16        ;0A929C|        |       ; Soul Shard
-        db $00        ;0A929D|        |       ;
-        db $00        ;0A929E|        |       ;
-        db $00        ;0A929F|        |       ;
-        db $00        ;0A92A0|        |       ;
-        db $00        ;0A92A1|        |       ;
-        db $00        ;0A92A2|        |       ;
-        db $00        ;0A92A3|        |       ;
-        db $00        ;0A92A4|        |       ;
-        db $00        ;0A92A5|        |       ;
-        db $00        ;0A92A6|        |       ;
-        db $00        ;0A92A7|        |       ;
-        db $00        ;0A92A8|        |       ;
-        db $04        ;0A92A9|        |       ; Giant Bat
-        db $1C        ;0A92AA|        |       ;
-        db $1D        ;0A92AB|        |       ;
-        db $1E        ;0A92AC|        |       ;
-        db $6E        ;0A92AD|        |       ;
-        db $6F        ;0A92AE|        |       ;
-        db $0C        ;0A92AF|        |       ;
-        db $22        ;0A92B0|        |       ;
-        db $00        ;0A92B1|        |       ;
-        db $00        ;0A92B2|        |       ;
-        db $00        ;0A92B3|        |       ;
-        db $13        ;0A92B4|        |       ;
-        db $00        ;0A92B5|        |       ;
-        db $00        ;0A92B6|        |       ;
-        db $00        ;0A92B7|        |       ;
-        db $00        ;0A92B8|        |       ;
-        db $00        ;0A92B9|        |       ;
-        db $00        ;0A92BA|        |       ;
-        db $00        ;0A92BB|        |       ;
-        db $24        ;0A92BC|        |       ;
-        db $25        ;0A92BD|        |       ;
-        db $26        ;0A92BE|        |       ;
-        db $27        ;0A92BF|        |       ;
-        db $29        ;0A92C0|        |       ;
-        db $28        ;0A92C1|        |       ;
-        db $2B        ;0A92C2|        |       ;
-        db $2F        ;0A92C3|        |       ;
-        db $00        ;0A92C4|        |       ;
-        db $2C        ;0A92C5|        |       ;
-        db $63        ;0A92C6|        |       ;
-        db $64        ;0A92C7|        |       ;
-        db $65        ;0A92C8|        |       ;
-        db $66        ;0A92C9|        |       ;
-        db $07        ;0A92CA|        |       ;
-        db $10        ;0A92CB|        |       ;
-        db $07        ;0A92CC|        |       ;
-        db $68        ;0A92CD|        |       ;
-        db $00        ;0A92CE|        |       ;
-        db $00        ;0A92CF|        |       ;
-        db $00        ;0A92D0|        |       ;
-        db $01        ;0A92D1|        |       ;
-        db $16        ;0A92D2|        |       ;
-        db $6A        ;0A92D3|        |       ;
-        db $0D        ;0A92D4|        |       ;
-        db $00        ;0A92D5|        |       ;
-        db $00        ;0A92D6|        |       ;
-        db $00        ;0A92D7|        |       ;
-        db $00        ;0A92D8|        |       ;
-        db $00        ;0A92D9|        |       ;
- 
-  spawner_entity_ID_03:             ; -> $03 -> r_entity_ID
-    db $00        ;0A92DA|        |       ;
-        db $48        ;0A92DB|        |       ;
-        db $48        ;0A92DC|        |       ;
-        db $4B        ;0A92DD|        |       ;
-        db $51        ;0A92DE|        |       ;
-        db $01        ;0A92DF|        |       ;
-        db $02        ;0A92E0|        |       ;
-        db $03        ;0A92E1|        |       ;
-        db $00        ;0A92E2|        |       ;
-        db $00        ;0A92E3|        |       ;
-        db $00        ;0A92E4|        |       ;
-        db $52        ;0A92E5|        |       ;
-        db $4A        ;0A92E6|        |       ;
-        db $4A        ;0A92E7|        |       ;
-        db $56        ;0A92E8|        |       ;
-        db $55        ;0A92E9|        |       ;
-        db $49        ;0A92EA|        |       ;
-        db $54        ;0A92EB|        |       ;
-        db $58        ;0A92EC|        |       ;
-        db $57        ;0A92ED|        |       ;
-        db $4F        ;0A92EE|        |       ;
-        db $53        ;0A92EF|        |       ;
-        db $4D        ;0A92F0|        |       ;
-        db $4E        ;0A92F1|        |       ;
-        db $4C        ;0A92F2|        |       ;
-        db $5B        ;0A92F3|        |       ;
-        db $5A        ;0A92F4|        |       ;
-        db $04        ;0A92F5|        |       ;
-        db $05        ;0A92F6|        |       ;
-        db $06        ;0A92F7|        |       ;
-        db $0A        ;0A92F8|        |       ;
-        db $08        ;0A92F9|        |       ;
-        db $09        ;0A92FA|        |       ;
-        db $07        ;0A92FB|        |       ;
-        db $00        ;0A92FC|        |       ;
-        db $0C        ;0A92FD|        |       ;
-        db $0B        ;0A92FE|        |       ;
-        db $09        ;0A92FF|        |       ;
-        db $0D        ;0A9300|        |       ;
-        db $49        ;0A9301|        |       ;
-        db $5C        ;0A9302|        |       ;
-        db $5D        ;0A9303|        |       ;
-        db $56        ;0A9304|        |       ;
-        db $4A        ;0A9305|        |       ;
-        db $64        ;0A9306|        |       ;
-        db $50        ;0A9307|        |       ;
-        db $5E        ;0A9308|        |       ;
-        db $7D        ;0A9309|        |       ;
-        db $82        ;0A930A|        |       ;
-        db $80        ;0A930B|        |       ;
-        db $4D        ;0A930C|        |       ;
-        db $7F        ;0A930D|        |       ;
-        db $7E        ;0A930E|        |       ;
-        db $84        ;0A930F|        |       ;
-        db $76        ;0A9310|        |       ;
-        db $7B        ;0A9311|        |       ;
-        db $7C        ;0A9312|        |       ;
-        db $75        ;0A9313|        |       ;
-        db $48        ;0A9314|        |       ;
-        db $60        ;0A9315|        |       ;
-        db $61        ;0A9316|        |       ;
-        db $58        ;0A9317|        |       ;
-        db $58        ;0A9318|        |       ;
-        db $62        ;0A9319|        |       ;
-        db $63        ;0A931A|        |       ;
-        db $56        ;0A931B|        |       ;
-        db $74        ;0A931C|        |       ;
-        db $59        ;0A931D|        |       ;
-        db $5F        ;0A931E|        |       ;
-        db $64        ;0A931F|        |       ;
-        db $65        ;0A9320|        |       ;
-        db $4A        ;0A9321|        |       ;
-        db $4B        ;0A9322|        |       ;
-        db $54        ;0A9323|        |       ;
-        db $4B        ;0A9324|        |       ;
-        db $4C        ;0A9325|        |       ;
-        db $73        ;0A9326|        |       ;
-        db $71        ;0A9327|        |       ;
-        db $72        ;0A9328|        |       ;
-        db $48        ;0A9329|        |       ;
-        db $5A        ;0A932A|        |       ;
-        db $58        ;0A932B|        |       ;
-        db $51        ;0A932C|        |       ;
-        db $00        ;0A932D|        |       ;
-        db $00        ;0A932E|        |       ;
-        db $00        ;0A932F|        |       ;
-        db $00        ;0A9330|        |       ;
-        db $00        ;0A9331|        |       ;
-
+org $135CC  
+base $B5CC  
+    randomDrops_ID_stage0: db $95,$93,$93,$97                   ;04B5CC| 93     ; SUBWE_axe       SBC.B #$93  subWeapon processing ID
+    randomDrops_ID_stage1: db $93,$95,$97,$95                   ;04B5D0| 94     ; MULIT shot      
+    randomDrops_ID_stage2: db $93,$97,$93,$95                   ;04B5D4| 95     ; SUBWE_dagger      
+    randomDrops_ID_stage3: db $93,$95,$93,$95                   ;04B5D8| 96     ; SUBWE_holywater     
+    randomDrops_ID_stage4: db $93,$95,$97,$95                   ;04B5DC| 97     ; SUBWE_clock          
+    randomDrops_ID_stage5: db $95,$95,$97,$95                   ;04B5E0| 98 +   ; errors   
+    randomDrops_ID_stage6: db $95,$95,$97,$95                   ;04B5E4| anyRandomDropHandler in enemy.asm could add others but needs helper handler for subweapon.. but if you do not want any..     
+    randomDrops_ID_stage7: db $97,$95,$93,$95                   ;04B5E8|      
+    randomDrops_ID_stage8: db $97,$95,$93,$93                   ;04B5EC|      
+    randomDrops_ID_stage9: db $97,$95,$93,$93                   ;04B5F0|      
+    randomDrops_ID_stageA: db $94,$96,$93,$94                   ;04B5F4|      
+    randomDrops_ID_stageB: db $97,$97,$93,$95                   ;04B5F8|      
+    randomDrops_ID_stageC: db $97,$94,$96,$93                   ;04B5FC|   
+    randomDrops_ID_stageD: db $97,$97,$93,$95                   ;04B600|   
+    randomDrops_ID_stageE: db $93,$96,$95,$97                   ;04B604|   
+    randomDrops_ID_stageF: db $97,$93,$95,$96                   ;04B608|   
 
 }
 
@@ -1055,6 +888,198 @@ org $B083
       db $00      ; SUBWE_CLOCK = $0B                                    
 
 }
+
+
+{ ; enemySpawnerIDs
+
+org $29282        ; bank_0a 
+base $9282
+
+                        ; r_spawnerXCoord -> $00
+                        ; r_spawnerYCoord -> $01
+  spawner_entity_AI_02:             ;           -> $02 -> r_entity_AI
+    db $00        ;0A9282|        |       ; changes the AI the spaned enemy uses  
+        db $01        ;0A9283|        |       ; Skull Knight                      
+        db $02        ;0A9284|        |       ; Cyclops
+        db $07        ;0A9285|        |       ; The Monster
+        db $0D        ;0A9286|        |       ; Death
+        db $00        ;0A9287|        |       ;
+        db $00        ;0A9288|        |       ;
+        db $00        ;0A9289|        |       ;
+        db $00        ;0A928A|        |       ;
+        db $00        ;0A928B|        |       ;
+        db $00        ;0A928C|        |       ;
+        db $0E        ;0A928D|        |       ; Mummy Boss
+        db $05        ;0A928E|        |       ; Alucard
+        db $06        ;0A928F|        |       ; Bone Dragon King
+        db $12        ;0A9290|        |       ; Storm Clouds
+        db $11        ;0A9291|        |       ; Grant
+        db $03        ;0A9292|        |       ;
+        db $10        ;0A9293|        |       ;
+        db $14        ;0A9294|        |       ; Grant's Knife
+        db $21        ;0A9295|        |       ;
+        db $0B        ;0A9296|        |       ; Doppelganger
+        db $0F        ;0A9297|        |       ; Doppelganger Weapon
+        db $09        ;0A9298|        |       ; Triad Wisp
+        db $0A        ;0A9299|        |       ; Medusa
+        db $08        ;0A929A|        |       ;
+        db $17        ;0A929B|        |       ; Alucard Fireball
+        db $16        ;0A929C|        |       ; Soul Shard
+        db $00        ;0A929D|        |       ;
+        db $00        ;0A929E|        |       ;
+        db $00        ;0A929F|        |       ;
+        db $00        ;0A92A0|        |       ;
+        db $00        ;0A92A1|        |       ;
+        db $00        ;0A92A2|        |       ;
+        db $00        ;0A92A3|        |       ;
+        db $00        ;0A92A4|        |       ;
+        db $00        ;0A92A5|        |       ;
+        db $00        ;0A92A6|        |       ;
+        db $00        ;0A92A7|        |       ;
+        db $00        ;0A92A8|        |       ;
+        db $04        ;0A92A9|        |       ; Giant Bat
+        db $1C        ;0A92AA|        |       ;
+        db $1D        ;0A92AB|        |       ;
+        db $1E        ;0A92AC|        |       ;
+        db $6E        ;0A92AD|        |       ;
+        db $6F        ;0A92AE|        |       ;
+        db $0C        ;0A92AF|        |       ;
+        db $22        ;0A92B0|        |       ;
+        db $00        ;0A92B1|        |       ;
+        db $00        ;0A92B2|        |       ;
+        db $00        ;0A92B3|        |       ;
+        db $13        ;0A92B4|        |       ;
+        db $00        ;0A92B5|        |       ;
+        db $00        ;0A92B6|        |       ;
+        db $00        ;0A92B7|        |       ;
+        db $00        ;0A92B8|        |       ;
+        db $00        ;0A92B9|        |       ;
+        db $00        ;0A92BA|        |       ;
+        db $00        ;0A92BB|        |       ;
+        db $24        ;0A92BC|        |       ;
+        db $25        ;0A92BD|        |       ;
+        db $26        ;0A92BE|        |       ;
+        db $27        ;0A92BF|        |       ;
+        db $29        ;0A92C0|        |       ;
+        db $28        ;0A92C1|        |       ;
+        db $2B        ;0A92C2|        |       ;
+        db $2F        ;0A92C3|        |       ;
+        db $00        ;0A92C4|        |       ;
+        db $2C        ;0A92C5|        |       ;
+        db $63        ;0A92C6|        |       ;
+        db $64        ;0A92C7|        |       ;
+        db $65        ;0A92C8|        |       ;
+        db $66        ;0A92C9|        |       ;
+        db $07        ;0A92CA|        |       ;
+        db $10        ;0A92CB|        |       ;
+        db $07        ;0A92CC|        |       ;
+        db $68        ;0A92CD|        |       ;
+        db $00        ;0A92CE|        |       ;
+        db $00        ;0A92CF|        |       ;
+        db $00        ;0A92D0|        |       ;
+        db $01        ;0A92D1|        |       ;
+        db $16        ;0A92D2|        |       ;
+        db $6A        ;0A92D3|        |       ;
+        db $0D        ;0A92D4|        |       ;
+        db $00        ;0A92D5|        |       ;
+        db $00        ;0A92D6|        |       ;
+        db $00        ;0A92D7|        |       ;
+        db $00        ;0A92D8|        |       ;
+        db $00        ;0A92D9|        |       ;
+ 
+  spawner_entity_ID_03:             ; -> $03 -> r_entity_ID
+    db $00        ;0A92DA|        |       ;
+        db $48        ;0A92DB|        |       ;
+        db $48        ;0A92DC|        |       ;
+        db $4B        ;0A92DD|        |       ;
+        db $51        ;0A92DE|        |       ;
+        db $01        ;0A92DF|        |       ;
+        db $02        ;0A92E0|        |       ;
+        db $03        ;0A92E1|        |       ;
+        db $00        ;0A92E2|        |       ;
+        db $00        ;0A92E3|        |       ;
+        db $00        ;0A92E4|        |       ;
+        db $52        ;0A92E5|        |       ;
+        db $4A        ;0A92E6|        |       ;
+        db $4A        ;0A92E7|        |       ;
+        db $56        ;0A92E8|        |       ;
+        db $55        ;0A92E9|        |       ;
+        db $49        ;0A92EA|        |       ;
+        db $54        ;0A92EB|        |       ;
+        db $58        ;0A92EC|        |       ;
+        db $57        ;0A92ED|        |       ;
+        db $4F        ;0A92EE|        |       ;
+        db $53        ;0A92EF|        |       ;
+        db $4D        ;0A92F0|        |       ;
+        db $4E        ;0A92F1|        |       ;
+        db $4C        ;0A92F2|        |       ;
+        db $5B        ;0A92F3|        |       ;
+        db $5A        ;0A92F4|        |       ;
+        db $04        ;0A92F5|        |       ;
+        db $05        ;0A92F6|        |       ;
+        db $06        ;0A92F7|        |       ;
+        db $0A        ;0A92F8|        |       ;
+        db $08        ;0A92F9|        |       ;
+        db $09        ;0A92FA|        |       ;
+        db $07        ;0A92FB|        |       ;
+        db $00        ;0A92FC|        |       ;
+        db $0C        ;0A92FD|        |       ;
+        db $0B        ;0A92FE|        |       ;
+        db $09        ;0A92FF|        |       ;
+        db $0D        ;0A9300|        |       ;
+        db $49        ;0A9301|        |       ;
+        db $5C        ;0A9302|        |       ;
+        db $5D        ;0A9303|        |       ;
+        db $56        ;0A9304|        |       ;
+        db $4A        ;0A9305|        |       ;
+        db $64        ;0A9306|        |       ;
+        db $50        ;0A9307|        |       ;
+        db $5E        ;0A9308|        |       ;
+        db $7D        ;0A9309|        |       ;
+        db $82        ;0A930A|        |       ;
+        db $80        ;0A930B|        |       ;
+        db $4D        ;0A930C|        |       ;
+        db $7F        ;0A930D|        |       ;
+        db $7E        ;0A930E|        |       ;
+        db $84        ;0A930F|        |       ;
+        db $76        ;0A9310|        |       ;
+        db $7B        ;0A9311|        |       ;
+        db $7C        ;0A9312|        |       ;
+        db $75        ;0A9313|        |       ;
+        db $48        ;0A9314|        |       ;
+        db $60        ;0A9315|        |       ;
+        db $61        ;0A9316|        |       ;
+        db $58        ;0A9317|        |       ;
+        db $58        ;0A9318|        |       ;
+        db $62        ;0A9319|        |       ;
+        db $63        ;0A931A|        |       ;
+        db $56        ;0A931B|        |       ;
+        db $74        ;0A931C|        |       ;
+        db $59        ;0A931D|        |       ;
+        db $5F        ;0A931E|        |       ;
+        db $64        ;0A931F|        |       ;
+        db $65        ;0A9320|        |       ;
+        db $4A        ;0A9321|        |       ;
+        db $4B        ;0A9322|        |       ;
+        db $54        ;0A9323|        |       ;
+        db $4B        ;0A9324|        |       ;
+        db $4C        ;0A9325|        |       ;
+        db $73        ;0A9326|        |       ;
+        db $71        ;0A9327|        |       ;
+        db $72        ;0A9328|        |       ;
+        db $48        ;0A9329|        |       ;
+        db $5A        ;0A932A|        |       ;
+        db $58        ;0A932B|        |       ;
+        db $51        ;0A932C|        |       ;
+        db $00        ;0A932D|        |       ;
+        db $00        ;0A932E|        |       ;
+        db $00        ;0A932F|        |       ;
+        db $00        ;0A9330|        |       ;
+        db $00        ;0A9331|        |       ;
+
+
+}
+
 
 ; !! enemy.asm 
 { ; enemy_HitBox

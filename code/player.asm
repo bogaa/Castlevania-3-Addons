@@ -71,7 +71,7 @@ db $9C                               ;0E8000|        |      ; NES PRG 38000
 	endif 
 
 
-if !playerAclucardShootOnStairs == 1 
+if !alucardStairAttack == 1 
     alucardAttackStairs:
 		lda.w r_entity_ID
 		cmp #$03
@@ -3395,7 +3395,7 @@ endif
 	
 	player_SubWeStair_state24:
 						
-			if !playerAclucardShootOnStairs == 1 
+			if !alucardStairAttack == 1 
 						jsr alucardAttackStairs 
 			else 			
 						JSR.W player_animCountDown                    ;0E94FF|20F2BA  |0EBAF2;
@@ -4221,7 +4221,7 @@ endif
 						AND.B #$08                           ;0E9974|2908    |      ;
 						BNE CODE_0E9984                      ;0E9976|D00C    |0E9984;
 
-		if !playerAclucardShootOnStairs == 1
+		if !alucardStairAttack == 1
 					-	lda.b r_partner						; 17
 						jsr characterCheckAluSt
 						bne +

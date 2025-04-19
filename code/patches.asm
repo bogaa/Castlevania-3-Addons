@@ -5,8 +5,7 @@ pullPC
   mainGameHijack:   
     
     jsr updateHeldButtonFlag
-
-  
+ 
     if !levelSelect == 1
       lda.b r_Joy1Held
       and #$10
@@ -23,8 +22,7 @@ pullPC
     endLevelSelect:
       
     endif 
-
-    
+   
     if !CHR_paralex == 1
       newParalexScroll:
         lda.b r_roomEffect
@@ -470,7 +468,39 @@ pullPC
     ; lda #$03
     ; sta.w $5206
     ; rts 
-
+    
+    textStages:   ; max lanth for HUD 13 
+      dw text_stage_01  
+      dw text_stage_02  
+      dw text_stage_03  
+      dw text_stage_04  
+      dw text_stage_05  
+      dw text_stage_06  
+      dw text_stage_07  
+      dw text_stage_08  
+      dw text_stage_09  
+      dw text_stage_0a  
+      dw text_stage_0b  
+      dw text_stage_0c  
+      dw text_stage_0d  
+      dw text_stage_0e  
+      dw text_stage_0f 
+    
+    text_stage_01: db "    WALLACHIA",$FF     
+    text_stage_02: db "  CLOCK TOWER",$FF     
+    text_stage_03: db "   MAD FOREST",$FF     
+    text_stage_04: db "SHIP OF FOOLS",$FF     
+    text_stage_05: db " TOWER TERROR",$FF       
+    text_stage_06: db "     CAUSEWAY",$FF     
+    text_stage_07: db "  MURKY MARSH",$FF     
+    text_stage_08: db "ALUCARDS CAVE",$FF     
+    text_stage_09: db "  SUNKEN CITY",$FF     
+    text_stage_0a: db "    CATACOMBS",$FF     
+    text_stage_0b: db "MOUNTAIN VIEW",$FF     
+    text_stage_0c: db "    COURTYARD",$FF       
+    text_stage_0d: db "  CASTLE HALL",$FF     
+    text_stage_0e: db "ELUSION TOWER",$FF       
+    text_stage_0f: db "DRACUL QUATER",$FF 
 
   { ;stage table    
     stageTables:
@@ -609,41 +639,7 @@ pullPC
       db $0E,$01,$01 ; stage A-02
       db $0E,$02,$00 ; stage A-03
       db $0E,$02,$01 ; Dracula's room
-      db $ff 
-
-    textStages:   ; max lanth for HUD 13 
-      dw text_stage_01  
-      dw text_stage_02  
-      dw text_stage_03  
-      dw text_stage_04  
-      dw text_stage_05  
-      dw text_stage_06  
-      dw text_stage_07  
-      dw text_stage_08  
-      dw text_stage_09  
-      dw text_stage_0a  
-      dw text_stage_0b  
-      dw text_stage_0c  
-      dw text_stage_0d  
-      dw text_stage_0e  
-      dw text_stage_0f 
-    
-    text_stage_01: db "     WARAKIYA",$FF     
-    text_stage_02: db "  CLOCK TOWER",$FF     
-    text_stage_03: db "   MAD FOREST",$FF     
-    text_stage_04: db "SHIP OF FOOLS",$FF     
-    text_stage_05: db " TOWER TERROR",$FF       
-    text_stage_06: db "     CAUSEWAY",$FF     
-    text_stage_07: db "  MURKY MARSH",$FF     
-    text_stage_08: db "ALUCARDS CAVE",$FF     
-    text_stage_09: db "  SUNKEN CITY",$FF     
-    text_stage_0a: db "    CATACOMBS",$FF     
-    text_stage_0b: db "MOUNTAIN VIEW",$FF     
-    text_stage_0c: db "    COURTYARD",$FF       
-    text_stage_0d: db "  CASTLE HALL",$FF     
-    text_stage_0e: db "ELUSION TOWER",$FF       
-    text_stage_0f: db "DRACUL QUATER",$FF 
-          
+      db $ff           
 
   }
 
@@ -1726,7 +1722,7 @@ pullPC
           db "DIFFICULTY",$FF   
       text_lifes_6a: 
           dw $21CA
-          db "LIFES",$FF    
+          db "LIVES",$FF    
       text_partner_6b:
           dw $220A
           db "PARNTER",$FF 
@@ -2102,10 +2098,10 @@ pullPC
             db $FF                               ;009BE8|        |      ;
  
         PAL_16:
-                       dw $3F00                             ;009BE9|        |      ;
-                       db $0F,$07,$17,$20,$0F,$06,$0B,$10   ;009BEB|        |      ;
-                       db $0F,$01,$03,$10,$0F,$01,$1B,$3C   ;009BF3|        |      ;
-                       db $FF                               ;009BFB|        |      ;
+            dw $3F00                             ;009BE9|        |      ;
+            db $0F,$07,$17,$20,$0F,$06,$0B,$10   ;009BEB|        |      ;
+            db $0F,$01,$03,$10,$0F,$01,$1B,$3C   ;009BF3|        |      ;
+            db $FF                               ;009BFB|        |      ;
  
         PAL_17:
             dw $212C                             ;009BFC|        |      ;
@@ -2120,10 +2116,10 @@ pullPC
             db $FF                               ;009C23|        |      ;
  
         PAL_1a:
-                       dw $3F00                             ;009C24|        |      ;
-                       db $0F,$16,$26,$20,$0F,$0B,$1B,$01   ;009C26|        |      ;
-                       db $0F,$11,$11,$31,$0F,$31,$11,$21   ;009C2E|        |      ;
-                       db $FF                               ;009C36|        |      ;
+            dw $3F00                             ;009C24|        |      ;
+            db $0F,$16,$26,$20,$0F,$0B,$1B,$01   ;009C26|        |      ;
+            db $0F,$11,$11,$31,$0F,$31,$11,$21   ;009C2E|        |      ;
+            db $FF                               ;009C36|        |      ;
  
         PAL_1b:
             dw $3F00                             ;009C37|        |      ;
@@ -2219,6 +2215,7 @@ pullPC
             db $FF                               ;009D73|                 
 
 pushTable
+
 { ; -- text symbols title intro 
     
       ' ' = $00
@@ -2283,6 +2280,7 @@ pushTable
             dw $2327          
             db "OPENING",$ff        
       endif 
+
 
 
 

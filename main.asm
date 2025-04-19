@@ -58,17 +58,19 @@ org ROM_CHRstart+ROM_CHRsize
     !grantNinjaStar = 1
     !grantDaggerSpiderSilkFreez = 1
     
-    !playerAclucardShootOnStairs = 1 
+    !alucardStairAttack = 1         ; -- tweaks ---------------------
+    !duckableProjectiles = 1
+    !noRandomDrop = 1
 
 
-    !debuggMenu = 0                 ; -- debug ---------------------
-    !levelSelect = 1    
-    !sprite_viewer = 0              
-    
+              
     
     !CHR_paralex = 1                ; -- game elements --------------    
     !putAllSpritesBehindFog = 0
 
+    !debuggMenu = 0                 ; -- debug ---------------------
+    !levelSelect = 1    
+    !sprite_viewer = 0   
 
 }
 
