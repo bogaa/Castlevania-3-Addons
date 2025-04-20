@@ -10,7 +10,7 @@ check bankcross off
     ; 08000 02: data_misc.asm
     ; 0c000 03:
     ; 10000 04:
-	  ; 14000 05: 
+    ; 14000 05: 
     ; 18000 06: 
     ; 1c000 07: 
     ; 20000 08: boss.asm 
@@ -63,7 +63,7 @@ org ROM_CHRstart+ROM_CHRsize
     !noRandomDrop = 1
 
 
-              
+
     
     !CHR_paralex = 1                ; -- game elements --------------    
     !putAllSpritesBehindFog = 0
@@ -287,6 +287,7 @@ assert pc() <= $54000
 
 
   if !grantDaggerSpiderSilkFreez == 1 
+  
   org (CHR_SP_grant_02*$400)+ROM_CHRstart
       incbin "gfx/CHR/spiderGrant.chr"
   
@@ -296,6 +297,7 @@ assert pc() <= $54000
   
   org (CHR_SP_Boss_encounter_2a*$400)+ROM_CHRstart
       incbin "gfx/CHR/spiderGrantEncounter.chr"
+  
   endif 
 
 
